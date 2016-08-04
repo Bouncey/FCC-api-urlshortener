@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
+const databse = require('./database');
 const port = process.env.PORT || 8000;
-const database = require('./database');
 
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -9,13 +9,25 @@ app.set('view engine', 'pug');
 app.use('/new', ((req, res) => {
   var randNum = Math.floor(Math.random() * 9999) + 1;
   var refNum = String('0000' + randNum).slice(-4);
-  var refUrl = req.path.replace(/^\//, '');
+  var refUrl = req.query.url;
 
   if(refUrl.match(/htt(ps|p):\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/)){
     var newEntry = {ref: Number(refNum), refUrl: refUrl};
 
-    res.status(200).send(`${JSON.stringify(newEntry)}`);
-    database.storeUrl(newEntry);
+    database.storeUrl(newEntry, ((err, response) => {
+
+      if(err){
+
+        console.log(err);
+        res.status(500).send(`Ooops... Something went wrong, please try again`);
+
+      }else{
+
+      res.status(200).send(`{"ref":${response.ops[0].ref} "refUrl":${response.ops[0].refUrl}}`);
+
+      }
+
+    }));
 
   }else{
 
@@ -42,9 +54,3 @@ app.use(/\/\d\d\d\d/, ((req, res) => {
 
    }));
 }));
-
-app.get('*', ((req, res) => {
-  res.render('index');
-}));
-
-app.listen(port);
