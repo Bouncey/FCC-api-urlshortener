@@ -1,5 +1,5 @@
 const mongodb = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017/url_shortener';
+const url = process.env.MONGOLAB_URI;
 
 
 module.exports = {
@@ -16,7 +16,6 @@ storeUrl: function (newEntry){
               console.log(err);
             }
         db.close();
-
         });
       }
     }));

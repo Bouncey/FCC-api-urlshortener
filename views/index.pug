@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
+    title URL Shortener
     style.
       span{
         background-color: pink;
@@ -11,10 +11,13 @@ html(lang="en")
     h3 URL Shortener
 
     p Usage:
-      span '/new/https://www.google.co.uk'
+    p
+      span 'https://fierce-waters-34379.herokuapp.com/new/https://www.google.co.uk'
 
     p You will be given a reference number:
-      span '2110'
+    p
+      span  '{"ref":1866,"refUrl":"https://www.google.co.uk"}'
 
     p Append your reference number to this address:
-      span '/2110'
+    p
+      span 'https://fierce-waters-34379.herokuapp.com/1866'
